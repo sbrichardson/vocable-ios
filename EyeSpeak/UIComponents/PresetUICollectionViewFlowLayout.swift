@@ -17,10 +17,24 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
     override func initialLayoutAttributesForAppearingItem(at itemIndexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         let attr = super.initialLayoutAttributesForAppearingItem(at: itemIndexPath)
         // Make animation only happen for preset items
-        guard let item = dataSource?.itemIdentifier(for: itemIndexPath), case TextSelectionViewController.ItemWrapper.presetItem(_) = item else {
+        guard let item = dataSource?.itemIdentifier(for: itemIndexPath) else {
             return attr
         }
-        attr?.transform = CGAffineTransform(translationX: 0, y: 500.0)
+        
+        switch item {
+        case .textField(let text):
+            let presetItem = TextSelectionViewController.ItemWrapper.presetItem(text)
+            guard let presetIndexPath = dataSource?.indexPath(for: presetItem) else { break }
+            guard let presetAttr = self.layoutAttributesForItem(at: presetIndexPath) else { break }
+            attr?.alpha = 1.0
+            attr?.center = presetAttr.center
+            attr?.size = presetAttr.size
+            attr?.zIndex = 1000
+        case .presetItem(_):
+            attr?.transform = CGAffineTransform(translationX: 0, y: 500.0)
+        default:
+            break
+        }
         return attr
     }
     
@@ -33,4 +47,5 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
         attr?.transform = CGAffineTransform(translationX: 0, y: 500.0)
         return attr
     }
+    
 }

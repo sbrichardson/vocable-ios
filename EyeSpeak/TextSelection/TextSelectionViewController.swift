@@ -51,7 +51,14 @@ class TextSelectionViewController: UICollectionViewController {
     private var dataSource: UICollectionViewDiffableDataSource<Section, ItemWrapper>!
     private weak var orthogonalScrollView: UIScrollView? {
         didSet {
+            guard oldValue != orthogonalScrollView else {
+                return
+            }
+            print("scroll view changed")
             scrollOffsetObserver = orthogonalScrollView?.observe(\.contentOffset, changeHandler: handleScrollViewOffsetChange(scrollView:offset:))
+            if let scrollView = orthogonalScrollView {
+                scrollView.superview?.sendSubviewToBack(scrollView)
+            }
         }
     }
     private var scrollOffsetObserver: NSKeyValueObservation?
@@ -96,6 +103,21 @@ class TextSelectionViewController: UICollectionViewController {
         
         setupCollectionView()
         configureDataSource()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
     }
     
     private func setupCollectionView() {
@@ -220,7 +242,7 @@ class TextSelectionViewController: UICollectionViewController {
             
             switch identifier {
             case .textField(let title):
-                return self.setupCell(reuseIdentifier: TrackingButtonCollectionViewCell.reuseIdentifier, indexPath: indexPath, title: title, titleColor: .white,
+                return self.setupCell(reuseIdentifier: TrackingButtonCollectionViewCell.reuseIdentifier, indexPath: indexPath, title: title, titleColor: .orange,
                                       textStyle: .footnote, backgroundColor: .clear, animationViewColor: .backspaceBloom, borderColor: .clear)
             case .redo(let title), .toggleKeyboard(let title), .moreCategories(let title):
                 return self.setupCell(reuseIdentifier: TrackingButtonCollectionViewCell.reuseIdentifier, indexPath: indexPath, title: title, titleColor: .white,
@@ -267,12 +289,13 @@ class TextSelectionViewController: UICollectionViewController {
             return locateNearestContainingScrollView(for: view?.superview)
         }
         
-        if  orthogonalScrollView == nil && dataSource.snapshot().indexOfSection(.presets) == indexPath.section {
+        if dataSource.snapshot().indexOfSection(.presets) == indexPath.section {
             orthogonalScrollView = locateNearestContainingScrollView(for: cell)
         }
     }
 
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
         guard let selectedItem = dataSource.itemIdentifier(for: indexPath) else { return }
         switch selectedItem {
         case .presetItem(let text):
