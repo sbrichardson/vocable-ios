@@ -12,6 +12,7 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
     
     // Height dimension of the product designs.
     // Intended for use in computing the fractional-size dimensions of collection layout items rather than hard-coding width/height values
+    private static let totalWidth: CGFloat = 1194.0
     private static let totalHeight: CGFloat = 834.0
     
     var dataSource: UICollectionViewDiffableDataSource<PresetsViewController.Section, PresetsViewController.ItemWrapper>? {
@@ -99,6 +100,7 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
     
     static func categoriesSectionLayout() -> NSCollectionLayoutSection {
         let itemCount = CGFloat(4)
+        let sectionFractionalHeight = 137.0 / totalHeight
         
         let categoryItem = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1 / itemCount),
@@ -106,16 +108,27 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
         
         let containerGroup = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
-                                               heightDimension: .fractionalHeight(137.0 / totalHeight)),
+                                               heightDimension: .fractionalHeight(sectionFractionalHeight)),
             subitem: categoryItem, count: Int(itemCount))
-        containerGroup.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
+        
+        let boundaryItemSize: NSCollectionLayoutDimension = .fractionalWidth(32.0 / totalWidth)
+        let paginationIndicatorSize = NSCollectionLayoutSize(widthDimension: boundaryItemSize, heightDimension: .fractionalHeight(sectionFractionalHeight))
+        let paginationIndicatorAnchor = NSCollectionLayoutAnchor(edges: [.leading], fractionalOffset: CGPoint(x: -32.0 / totalWidth, y: 0))
+        let leadingPaginationIndicator = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: paginationIndicatorSize, elementKind: "PaginationIndicatorCollectionReusableView", containerAnchor: paginationIndicatorAnchor)
+        
+        
+        containerGroup.contentInsets = .init(top: 8, leading: boundaryItemSize.dimension, bottom: 8, trailing: boundaryItemSize.dimension)
+        
+        
         let section = NSCollectionLayoutSection(group: containerGroup)
         
         let backgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: "CategorySectionBackground")
         backgroundDecoration.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
         
         section.decorationItems = [backgroundDecoration]
+        section.boundarySupplementaryItems = [leadingPaginationIndicator]
         section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
+    
         return section
     }
     

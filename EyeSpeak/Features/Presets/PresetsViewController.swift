@@ -98,6 +98,11 @@ class PresetsViewController: UICollectionViewController, KeyboardSelectionDelega
         }
     }
     
+    enum SupplementaryItemKind: String {
+        case categorySectionBackground = "CategorySectionBackground"
+        case paginationIndicator = "PaginationIndicatorCollectionReusableView"
+    }
+    
     private var showKeyboard: Bool = false {
         didSet {
             self.updateSnapshot()
@@ -130,11 +135,14 @@ class PresetsViewController: UICollectionViewController, KeyboardSelectionDelega
         collectionView.register(UINib(nibName: "KeyboardGroupCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "KeyboardGroupCollectionViewCell")
         let layout = createLayout()
         collectionView.collectionViewLayout = layout
-        layout.register(CategorySectionBackground.self, forDecorationViewOfKind: "CategorySectionBackground")
+        
         collectionView.backgroundColor = UIColor.collectionViewBackgroundColor
         collectionView.allowsMultipleSelection = true
         
         collectionView.register(PresetPageControlReusableView.self, forSupplementaryViewOfKind: "footerPageIndicator", withReuseIdentifier: "PresetPageControlView")
+        collectionView.register(UINib(nibName: "PaginationIndicatorCollectionReusableView", bundle: nil),
+                                forSupplementaryViewOfKind: "PaginationIndicatorCollectionReusableView",
+                                withReuseIdentifier: PaginationIndicatorCollectionReusableView.reuseIdentifier)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -160,6 +168,9 @@ class PresetsViewController: UICollectionViewController, KeyboardSelectionDelega
                 return PresetUICollectionViewCompositionalLayout.keyboardSectionLayout()
             }
         }
+        
+        layout.register(CategorySectionBackground.self, forDecorationViewOfKind: SupplementaryItemKind.categorySectionBackground.rawValue)
+        
         return layout
     }
 
@@ -229,13 +240,19 @@ class PresetsViewController: UICollectionViewController, KeyboardSelectionDelega
         }
         
         dataSource.supplementaryViewProvider = { [weak self] (collectionView: UICollectionView, kind: String, indexPath: IndexPath) -> UICollectionReusableView? in
-            if kind == "CategorySectionBackground" {
+            
+            switch SupplementaryItemKind(rawValue: kind) {
+            case .categorySectionBackground:
                 let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CategorySectionBackground", for: indexPath) as! CategorySectionBackground
                 return view
+            case .paginationIndicator:
+                let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PaginationIndicatorCollectionReusableView", for: indexPath) as! PaginationIndicatorCollectionReusableView
+                return view
+            case nil: // TODO add dedicated kind for this
+                let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PresetPageControlView", for: indexPath) as! PresetPageControlReusableView
+                self?.pageControl = view.pageControl
+                return view
             }
-            let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PresetPageControlView", for: indexPath) as! PresetPageControlReusableView
-            self?.pageControl = view.pageControl
-            return view
         }
         
         dataSource.apply(snapshot, animatingDifferences: true)

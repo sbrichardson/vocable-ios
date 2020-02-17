@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PaginationIndicatorCollectionReusableView" id="U6b-Vx-4bR" customClass="PaginationIndicatorCollectionReusableView" customModule="EyeSpeak" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="270"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yse-Cg-5m2">
+                    <rect key="frame" x="0.0" y="44" width="320" height="226"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" name="DefaultFontColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <constraints>
+                <constraint firstItem="yse-Cg-5m2" firstAttribute="top" secondItem="VXr-Tz-HHm" secondAttribute="top" id="Gp4-R4-f2C"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="yse-Cg-5m2" secondAttribute="bottom" id="TYy-aY-tr8"/>
+                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="yse-Cg-5m2" secondAttribute="trailing" id="oYr-Wk-ugK"/>
+                <constraint firstItem="yse-Cg-5m2" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="tgn-a7-ASJ"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
+            <connections>
+                <outlet property="paginationLabel" destination="yse-Cg-5m2" id="peI-Kf-v1m"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="226.33928571428569"/>
+        </collectionReusableView>
+    </objects>
+    <resources>
+        <namedColor name="DefaultFontColor">
+            <color red="0.81599998474121094" green="0.93199998140335083" blue="0.91299998760223389" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
