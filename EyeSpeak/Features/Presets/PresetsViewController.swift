@@ -246,8 +246,9 @@ class PresetsViewController: UICollectionViewController, KeyboardSelectionDelega
                 let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "CategorySectionBackground", for: indexPath) as! CategorySectionBackground
                 return view
             case .paginationIndicator:
-                let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PaginationIndicatorCollectionReusableView", for: indexPath) as! PaginationIndicatorCollectionReusableView
-                return view
+                let paginationIndicator = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PaginationIndicatorCollectionReusableView", for: indexPath) as! PaginationIndicatorCollectionReusableView
+                paginationIndicator.paginationDirection = .backward
+                return paginationIndicator
             case nil: // TODO add dedicated kind for this
                 let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "PresetPageControlView", for: indexPath) as! PresetPageControlReusableView
                 self?.pageControl = view.pageControl

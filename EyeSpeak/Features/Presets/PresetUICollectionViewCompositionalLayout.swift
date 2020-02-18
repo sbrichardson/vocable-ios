@@ -111,21 +111,19 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
                                                heightDimension: .fractionalHeight(sectionFractionalHeight)),
             subitem: categoryItem, count: Int(itemCount))
         
-        let boundaryItemSize: NSCollectionLayoutDimension = .fractionalWidth(32.0 / totalWidth)
+        let boundaryItemSize: NSCollectionLayoutDimension = .fractionalWidth(104 / totalWidth)
         let paginationIndicatorSize = NSCollectionLayoutSize(widthDimension: boundaryItemSize, heightDimension: .fractionalHeight(sectionFractionalHeight))
         let paginationIndicatorAnchor = NSCollectionLayoutAnchor(edges: [.leading], fractionalOffset: CGPoint(x: -32.0 / totalWidth, y: 0))
         let leadingPaginationIndicator = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: paginationIndicatorSize, elementKind: "PaginationIndicatorCollectionReusableView", containerAnchor: paginationIndicatorAnchor)
         
-        
         containerGroup.contentInsets = .init(top: 8, leading: boundaryItemSize.dimension, bottom: 8, trailing: boundaryItemSize.dimension)
-        
         
         let section = NSCollectionLayoutSection(group: containerGroup)
         
         let backgroundDecoration = NSCollectionLayoutDecorationItem.background(elementKind: "CategorySectionBackground")
         backgroundDecoration.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
         
-        section.decorationItems = [backgroundDecoration]
+//        section.decorationItems = [backgroundDecoration]
         section.boundarySupplementaryItems = [leadingPaginationIndicator]
         section.contentInsets = NSDirectionalEdgeInsets(top: 16, leading: 0, bottom: 16, trailing: 0)
     

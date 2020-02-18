@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,27 +13,62 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="270"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yse-Cg-5m2">
-                    <rect key="frame" x="0.0" y="44" width="320" height="226"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" name="DefaultFontColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lbG-Ed-eRc" customClass="BorderedView" customModule="EyeSpeak" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="270"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="45P-Er-2Bq" customClass="HotCornerExpandingUIControl" customModule="EyeSpeak" customModuleProvider="target">
+                            <rect key="frame" x="8" y="52" width="304" height="210"/>
+                            <state key="normal" title="Button">
+                                <color key="titleColor" name="DefaultFontColor"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" name="Background"/>
+                    <constraints>
+                        <constraint firstAttribute="trailingMargin" secondItem="45P-Er-2Bq" secondAttribute="trailing" id="3Om-dF-mHx"/>
+                        <constraint firstItem="45P-Er-2Bq" firstAttribute="leading" secondItem="lbG-Ed-eRc" secondAttribute="leadingMargin" id="Fqt-iP-ZYK"/>
+                        <constraint firstAttribute="bottomMargin" secondItem="45P-Er-2Bq" secondAttribute="bottom" id="ro4-Ti-Q3q"/>
+                        <constraint firstItem="45P-Er-2Bq" firstAttribute="top" secondItem="lbG-Ed-eRc" secondAttribute="topMargin" id="sEh-Lm-EPt"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                            <color key="value" name="CategoryBackground"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" name="BorderHighlight"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <constraints>
-                <constraint firstItem="yse-Cg-5m2" firstAttribute="top" secondItem="VXr-Tz-HHm" secondAttribute="top" id="Gp4-R4-f2C"/>
-                <constraint firstItem="VXr-Tz-HHm" firstAttribute="bottom" secondItem="yse-Cg-5m2" secondAttribute="bottom" id="TYy-aY-tr8"/>
-                <constraint firstItem="VXr-Tz-HHm" firstAttribute="trailing" secondItem="yse-Cg-5m2" secondAttribute="trailing" id="oYr-Wk-ugK"/>
-                <constraint firstItem="yse-Cg-5m2" firstAttribute="leading" secondItem="VXr-Tz-HHm" secondAttribute="leading" id="tgn-a7-ASJ"/>
+                <constraint firstItem="lbG-Ed-eRc" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="LEb-VI-RWz"/>
+                <constraint firstItem="lbG-Ed-eRc" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="MxY-6E-X2Q"/>
+                <constraint firstAttribute="bottom" secondItem="lbG-Ed-eRc" secondAttribute="bottom" id="QpK-z5-NIt"/>
+                <constraint firstAttribute="trailing" secondItem="lbG-Ed-eRc" secondAttribute="trailing" id="ZMy-lv-kji"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="VXr-Tz-HHm"/>
             <connections>
-                <outlet property="paginationLabel" destination="yse-Cg-5m2" id="peI-Kf-v1m"/>
+                <outlet property="borderedView" destination="lbG-Ed-eRc" id="ZZf-I7-bEV"/>
+                <outlet property="paginationButton" destination="45P-Er-2Bq" id="Cca-m9-Nvc"/>
             </connections>
             <point key="canvasLocation" x="137.68115942028987" y="226.33928571428569"/>
         </collectionReusableView>
     </objects>
     <resources>
+        <namedColor name="Background">
+            <color red="0.12800000607967377" green="0.10899999737739563" blue="0.3580000102519989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BorderHighlight">
+            <color red="0.97500002384185791" green="0.64499998092651367" blue="0.18500000238418579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="CategoryBackground">
+            <color red="0.31200000643730164" green="0.29399999976158142" blue="0.57300001382827759" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="DefaultFontColor">
             <color red="0.81599998474121094" green="0.93199998140335083" blue="0.91299998760223389" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

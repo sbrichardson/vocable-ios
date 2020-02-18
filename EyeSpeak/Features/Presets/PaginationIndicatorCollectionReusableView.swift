@@ -10,7 +10,11 @@ import UIKit
 
 class PaginationIndicatorCollectionReusableView: UICollectionReusableView {
     
-    @IBOutlet weak var paginationLabel: UILabel!
+    // TODO: use another common type, not just hot corner expanding ui control
+    @IBOutlet weak var paginationButton: HotCornerExpandingUIControl!
+    @IBOutlet weak var borderedView: BorderedView!
+    
+    override var canReceiveGaze: Bool { true }
     
     var paginationDirection: PaginationDirection = .forward {
         didSet {
@@ -20,13 +24,14 @@ class PaginationIndicatorCollectionReusableView: UICollectionReusableView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundColor = .collectionViewBackgroundColor
+        
         updatePaginationLabel()
+        paginationButton.backgroundColor = .categoryBackgroundColor
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        paginationLabel.text = nil
+        paginationButton.setAttributedTitle(nil, for: .normal)
     }
     
     private func updatePaginationLabel() {
@@ -34,15 +39,16 @@ class PaginationIndicatorCollectionReusableView: UICollectionReusableView {
         
         switch paginationDirection {
         case .forward:
-            image = UIImage(systemName: "chevron.compact.right")
+            image = UIImage(systemName: "chevron.right")
         case .backward:
-            image = UIImage(systemName: "chevron.compact.left")
+            image = UIImage(systemName: "chevron.left")
         }
         
         let systemImageAttachment = NSTextAttachment(image: image)
         let attributedString = NSMutableAttributedString(attachment: systemImageAttachment)
-        attributedString.addAttributes([NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 48)], range: NSRange(location: 0, length: attributedString.length))
-        paginationLabel.attributedText = attributedString
+        attributedString.addAttributes([
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 48)], range: NSRange(location: 0, length: attributedString.length))
+        paginationButton.setAttributedTitle(attributedString, for: .normal)
     }
     
 }

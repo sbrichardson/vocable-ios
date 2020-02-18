@@ -8,7 +8,8 @@
 
 import UIKit
 
-final private class HotCornerExpandingUIControl: UIButton {
+// TODO: roll this into a common type
+final class HotCornerExpandingUIControl: UIButton {
 
     private var gazeBeginDate: Date?
 
