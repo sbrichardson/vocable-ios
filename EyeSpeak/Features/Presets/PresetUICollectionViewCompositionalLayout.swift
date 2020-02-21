@@ -25,13 +25,17 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
             return attr
         }
         
+        if itemIndexPath.section == 2 {
+            print("Appearing: item: \(item) indexpath: \(itemIndexPath)")
+        }
+        
         switch item {
-        case .paginatedPresets, .key, .keyboardFunctionButton:
+        case .paginatedPresets:
             attr?.transform = CGAffineTransform(translationX: 0, y: 500.0)
         default:
             break
         }
-        
+
         return attr
     }
 
@@ -43,18 +47,36 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
         }
         
         switch item {
-        case .paginatedPresets, .key, .keyboardFunctionButton:
+        case .paginatedPresets:
             attr?.transform = CGAffineTransform(translationX: 0, y: 500.0)
         default:
             break
         }
-        
+
         return attr
     }
     
     // MARK: - Section Layouts
+    static func presetTopBarLayout(with environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+        let textFieldItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .fractionalHeight(1.0)))
+        textFieldItem.contentInsets = .init(top: 4, leading: 4, bottom: 0, trailing: 4)
+        
+        let functionItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.1), heightDimension: .fractionalHeight(1.0)))
+        functionItem.contentInsets = .init(top: 4, leading: 4, bottom: 0, trailing: 4)
+        
+        let subitems = [textFieldItem, functionItem, functionItem]
+        
+        let containerGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
+                                               heightDimension: .fractionalHeight(100.0 / totalSize.height)),
+            subitems: subitems)
+        
+        let section = NSCollectionLayoutSection(group: containerGroup)
+        
+        return section
+    }
     
-    static func textFieldSectionLayout(with environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+    static func keyboardTopBarLayout(with environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let textFieldItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.7), heightDimension: .fractionalHeight(1.0)))
         textFieldItem.contentInsets = .init(top: 4, leading: 4, bottom: 0, trailing: 4)
         

@@ -24,16 +24,17 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
         case keyboard = "Select letters below to start typing."
     }
     
-    private var _textTransaction = TextTransaction(text: HintText.preset.rawValue)
-    
-    private var textTransaction: TextTransaction {
-        return _textTransaction
+    private var textTransaction: TextTransaction = TextTransaction(text: HintText.preset.rawValue) {
+        didSet {
+            updateSnapshot()
+        }
     }
     
     let textExpression = TextExpression()
     
     enum Section: Int, CaseIterable {
-        case textField
+        case presetTopBar
+        case keyboardTopBar
         case categories
         case predictiveText
         case presets
@@ -92,17 +93,9 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
         }
     }
     
-    private var showKeyboard: Bool = false {
-        didSet {
-            self.updateSnapshot()
-        }
-    }
+    private var showKeyboard: Bool = false
     
-    private var suggestions: [TextSuggestion] = [] {
-        didSet {
-            updateSnapshot()
-        }
-    }
+    private var suggestions: [TextSuggestion] = []
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
@@ -145,16 +138,18 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
             let sectionKind = self.dataSource.snapshot().sectionIdentifiers[sectionIndex]
             
             switch sectionKind {
-            case .textField:
-                return PresetUICollectionViewCompositionalLayout.textFieldSectionLayout(with: layoutEnvironment)
+            case .presetTopBar:
+                return PresetUICollectionViewCompositionalLayout.presetTopBarLayout(with: layoutEnvironment)
+            case .keyboardTopBar:
+                return PresetUICollectionViewCompositionalLayout.keyboardTopBarLayout(with: layoutEnvironment)
             case .categories:
                 return PresetUICollectionViewCompositionalLayout.categoriesSectionLayout(with: layoutEnvironment)
             case .predictiveText:
                 return PresetUICollectionViewCompositionalLayout.predictiveTextSectionLayout(with: layoutEnvironment)
             case .presets:
-                guard !self.showKeyboard else {
-                    return nil
-                }
+//                guard !self.showKeyboard else {
+//                    return nil
+//                }
                 
                 return PresetUICollectionViewCompositionalLayout.presetsSectionLayout(with: layoutEnvironment)
             case .keyboard:
@@ -225,10 +220,10 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
 
         var snapshot = NSDiffableDataSourceSnapshot<Section, ItemWrapper>()
         
-        snapshot.appendSections([.textField])
-        snapshot.appendItems([.textField(textTransaction.attributedText), .topBarButton(.save), .topBarButton(.togglePreset), .topBarButton(.settings)])
-        
         if showKeyboard {
+            snapshot.appendSections([.keyboardTopBar])
+            snapshot.appendItems([.textField(textTransaction.attributedText), .topBarButton(.save), .topBarButton(.togglePreset), .topBarButton(.settings)])
+            
             snapshot.appendSections([.predictiveText])
             
             if suggestions.isEmpty {
@@ -247,6 +242,9 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
             snapshot.appendItems("QWERTYUIOPASDFGHJKL'ZXCVBNM,.?".map { ItemWrapper.key("\($0)") })
             snapshot.appendItems([.keyboardFunctionButton(.clear), .keyboardFunctionButton(.space), .keyboardFunctionButton(.backspace), .keyboardFunctionButton(.speak)])
         } else {
+            snapshot.appendSections([.presetTopBar])
+            snapshot.appendItems([.textField(textTransaction.attributedText), .topBarButton(.toggleKeyboard), .topBarButton(.settings)])
+            
             snapshot.appendSections([.categories])
             snapshot.appendItems([.pagination(.paginatedCategories, .reverse)])
             snapshot.appendItems([.paginatedCategories])
@@ -336,8 +334,8 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
                 // of just clearing it
 
                 let newText = showKeyboard ? HintText.keyboard.rawValue : HintText.preset.rawValue
-                setTextTransaction(TextTransaction(text: newText, isHint: true))
                 suggestions = []
+                setTextTransaction(TextTransaction(text: newText, isHint: true))
             case .settings:
                 presentSettingsViewController()
             }
@@ -400,7 +398,7 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
     }
     
     private func setTextTransaction(_ transaction: TextTransaction) {
-        self._textTransaction = transaction
+        self.textTransaction = transaction
         
         // Update suggestions
         if textTransaction.isHint || textTransaction.text.last == " " {
