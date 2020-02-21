@@ -36,6 +36,16 @@ class TextFieldCollectionViewCell: VocableCollectionViewCell {
         textLabel.textColor = isSelected ? .selectedTextColor : .defaultTextColor
         textLabel.backgroundColor = .collectionViewBackgroundColor
         textLabel.isOpaque = true
+        textLabel.adjustsFontSizeToFitWidth = true
+        updateTextAlignment()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        updateTextAlignment()
+    }
+    
+    private func updateTextAlignment() {
+        textLabel.textAlignment = UITraitCollection.current.horizontalSizeClass == .regular ? .center : .left
     }
 
     func setup(title: NSAttributedString) {

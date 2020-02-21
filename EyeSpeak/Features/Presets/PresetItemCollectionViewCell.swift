@@ -23,6 +23,7 @@ class PresetItemCollectionViewCell: VocableCollectionViewCell {
         textLabel.textColor = isSelected ? .selectedTextColor : .defaultTextColor
         textLabel.backgroundColor = borderedView.fillColor
         textLabel.isOpaque = true
+        textLabel.adjustsFontSizeToFitWidth = true
     }
 
     func setup(title: String) {

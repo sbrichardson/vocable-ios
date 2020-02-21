@@ -27,7 +27,11 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
     private var _textTransaction = TextTransaction(text: HintText.preset.rawValue)
     
     private var textTransaction: TextTransaction {
-        return _textTransaction
+        set {
+            setTextTransaction(newValue)
+        } get {
+            _textTransaction
+        }
     }
     
     let textExpression = TextExpression()
@@ -218,14 +222,25 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
     // MARK: - NSDiffableDataSourceSnapshot construction
 
     func updateSnapshot(animated: Bool = true) {
-
         var snapshot = NSDiffableDataSourceSnapshot<Section, ItemWrapper>()
         
-        snapshot.appendSections([.topBar])
-        snapshot.appendItems([.topBarButton(.repeatSpokenText), .topBarButton(.toggleKeyboard)])
+        func appendTopBar() {
+            snapshot.appendSections([.topBar])
+            snapshot.appendItems([.topBarButton(.repeatSpokenText), .topBarButton(.toggleKeyboard)])
+        }
         
-        snapshot.appendSections([.textField])
-        snapshot.appendItems([.textField(textTransaction.attributedText)])
+        func appendTextField() {
+            snapshot.appendSections([.textField])
+            snapshot.appendItems([.textField(textTransaction.attributedText)])
+        }
+        
+        if UITraitCollection.current.horizontalSizeClass == .regular {
+            appendTopBar()
+            appendTextField()
+        } else {
+            appendTextField()
+            appendTopBar()
+        }
         
         if showKeyboard {
             snapshot.appendSections([.predictiveText])

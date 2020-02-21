@@ -110,6 +110,10 @@ final class HotCornerOverlayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        guard case .regular = UITraitCollection.current.horizontalSizeClass else {
+            return
+        }
+        
         // set pause hot corner
         self.view.addSubview(pauseButton)
         pauseButton.translatesAutoresizingMaskIntoConstraints = false

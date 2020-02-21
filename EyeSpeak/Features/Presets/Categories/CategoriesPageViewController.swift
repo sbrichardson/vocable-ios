@@ -10,12 +10,14 @@ import UIKit
 
 class CategoriesPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    private let itemsPerPage = 4
-    
     var selectedCategory: PresetCategory = .category1
     
+    private var itemsPerPage: Int {
+        UITraitCollection.current.horizontalSizeClass == .regular ? 4 : 1
+    }
+    
     private lazy var pages: [UIViewController] = PresetCategory.allCases.chunked(into: itemsPerPage).map { categories in
-        let collectionViewController = CategoryPageCollectionViewController(collectionViewLayout: CategoryPageCollectionViewController.createLayout(with: categories.count))
+        let collectionViewController = CategoryPageCollectionViewController(collectionViewLayout: CategoryPageCollectionViewController.createLayout(with: itemsPerPage))
         collectionViewController.items = categories
         return collectionViewController
     }

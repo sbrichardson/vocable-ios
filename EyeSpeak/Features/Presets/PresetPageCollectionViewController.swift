@@ -120,14 +120,14 @@ class PresetPageCollectionViewController: UICollectionViewController {
         private static let totalHeight: CGFloat = 834.0
         
         init(with itemCount: Int) {
-            super.init(section: CompositionalLayout.presetsSectionLayout())
+            super.init(section: CompositionalLayout.presetsSectionLayout(itemCount: itemCount))
         }
         
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
-        private static func presetsSectionLayout() -> NSCollectionLayoutSection {
+        private static func presetsSectionLayout(itemCount: Int) -> NSCollectionLayoutSection {
             let presetItem = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0 / 3.0),
                                                                                        heightDimension: .fractionalHeight(1.0)))
             
@@ -140,7 +140,7 @@ class PresetPageCollectionViewController: UICollectionViewController {
             let containerGroup = NSCollectionLayoutGroup.vertical(
                 layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1),
                                                    heightDimension: .fractionalHeight(1)),
-                subitem: rowGroup, count: 3)
+                subitem: rowGroup, count: Int(ceil(Double(itemCount) / 3)))
             containerGroup.interItemSpacing = .fixed(8)
             containerGroup.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
             

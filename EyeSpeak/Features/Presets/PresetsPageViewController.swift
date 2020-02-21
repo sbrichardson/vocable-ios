@@ -17,7 +17,9 @@ class PresetsPageViewController: UIPageViewController, UIPageViewControllerDataS
     weak var pageIndicatorDelegate: PageIndicatorDelegate?
     var selectedItem: String?
     
-    private let itemsPerPage = 9
+    private var itemsPerPage: Int {
+        UITraitCollection.current.horizontalSizeClass == .regular ? 9 : 6
+    }
     private var selectedCategory: PresetCategory
     
     private lazy var pages: [UIViewController] = {
