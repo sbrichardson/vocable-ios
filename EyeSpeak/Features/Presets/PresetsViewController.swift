@@ -95,7 +95,11 @@ class PresetsViewController: UICollectionViewController, PageIndicatorDelegate {
     
     private var showKeyboard: Bool = false
     
-    private var suggestions: [TextSuggestion] = []
+    private var suggestions: [TextSuggestion] = [] {
+        didSet {
+            updateSnapshot()
+        }
+    }
     
     override var prefersHomeIndicatorAutoHidden: Bool {
         return true
