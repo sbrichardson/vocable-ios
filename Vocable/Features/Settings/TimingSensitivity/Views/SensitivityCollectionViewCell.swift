@@ -15,9 +15,6 @@ class SensitivityCollectionViewCell: UICollectionViewCell {
     @IBOutlet private var mediumSensitivityButton: GazeableSegmentedButton!
     @IBOutlet private var highSensitivityButton: GazeableSegmentedButton!
     
-    @IBOutlet var topSeparator: UIView!
-    @IBOutlet var bottomSeparator: UIView!
-    
     private var disposables = Set<AnyCancellable>()
     
     override func awakeFromNib() {
