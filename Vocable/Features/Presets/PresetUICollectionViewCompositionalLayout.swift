@@ -274,7 +274,6 @@ class PresetUICollectionViewCompositionalLayout: UICollectionViewCompositionalLa
                 if case .compact = environment.traitCollection.verticalSizeClass {
                     return .fractionalHeight(120.0 / totalSize.height)
                 }
-                
                 return .fractionalHeight(99.0 / totalSize.height)
             }
             
